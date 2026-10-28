@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyMate AI</title>
 
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+
  </head>
 
  <body>
@@ -23,6 +26,44 @@
             <p>Turn your notes into summaries, quizzes and flashcards.</p>
         </section>
 
+        <section class="card">
+            <h2>What are we learning today?</h2>
+            <p>Paste your notes or enter a topic to get started.</p>
+
+            <label for="notes">Your notes</label>
+
+            <textarea
+                id="notes"
+                maxlength="12000"
+                placeholder="Example: JavaScript promises, async/await and fetch API..."
+            ></textarea>
+
+            <div class="input-footer">
+                <span id="charCount">0 / 12000 characters</span>
+
+                <label for="answerStyle">Answer style</label>
+                <select id="answerStyle">
+                    <option value="simple">Simple explanation</option>
+                    <option value="exam">Exam-focused</option>
+                    <option value="detailed">Detailed explanation</option>
+                </select>
+            </div>
+
+            <button id="generateBtn" class="primary-btn">
+                ✦ Generate study material
+            </button>
+
+            <p id="status" role="status"></p>
+        </section>
+
+        <section class="card results">
+            <div class="results-heading">
+                <div>
+                    <p class="eyebrow">YOUR LEARNING SPACE</p>
+                    <h2>Study materials</h2>
+                </div>
+                <button id="clearBtn" class="secondary-btn">Clear</button>
+            </div>
     
  </body>
  </html>

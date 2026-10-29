@@ -156,3 +156,53 @@ function showHistory() {
         history.appendChild(entry);
     });
 }
+// Clear all current history.
+document.getElementById("clearHistoryBtn").addEventListener("click", function () {
+    studyHistory = [];
+    showHistory();
+});
+
+// Clear the notes and output.
+document.getElementById("clearBtn").addEventListener("click", function () {
+    notes.value = "";
+    charCount.textContent = "0 / 12000 characters";
+    currentResult = "";
+
+    summary.innerHTML = '<p class="empty-message">Your summary will appear here.</p>';
+    quiz.innerHTML = '<p class="empty-message">Your quiz will appear here.</p>';
+    flashcards.innerHTML = '<p class="empty-message">Your flashcards will appear here.</p>';
+
+    status.textContent = "";
+});
+
+// Copy the current result.
+document.getElementById("copyBtn").addEventListener("click", async function () {
+    if (currentResult === "") {
+        status.textContent = "Generate study material first.";
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(currentResult);
+        status.textContent = "Copied to clipboard!";
+    } catch (error) {
+        status.textContent = "Copy failed. Try downloading the result.";
+    }
+});
+
+// Download the current result as a text file.
+document.getElementById("downloadBtn").addEventListener("click", function () {
+    if (currentResult === "") {
+        status.textContent = "Generate study material first.";
+        return;
+    }
+
+    const file = new Blob([currentResult], { type: "text/plain" });
+    const link = document.createElement("a");
+
+    link.href = URL.createObjectURL(file);
+    link.download = "study-notes.txt";
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+});

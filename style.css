@@ -48,3 +48,58 @@ button {
     background: var(--card);
     border-bottom: 1px solid var(--border);
 }
+
+.brand {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.brand span, .hero h1 span {
+    color: var(--accent);
+}
+
+.container {
+    width: min(900px, 90%);
+    margin: 40px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.25;
+    margin: 12px 0;
+}
+
+.hero p, .card > p, .results-heading p {
+    color: var(--muted);
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px;
+    margin-bottom: 24px;
+}
+
+.card h2 {
+    font-size: 21px;
+    margin-bottom: 6px;
+}
+
+.card > p {
+    margin-bottom: 20px;
+}

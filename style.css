@@ -103,3 +103,27 @@ button {
 .card > p {
     margin-bottom: 20px;
 }
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 0 7px;
+}
+
+textarea {
+    display: block;
+    width: 100%;
+    min-height: 180px;
+    resize: vertical;
+    padding: 15px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline-color: var(--accent);
+}
+
+textarea::placeholder {
+    color: var(--muted);
+}

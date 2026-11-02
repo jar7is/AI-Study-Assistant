@@ -127,3 +127,78 @@ textarea {
 textarea::placeholder {
     color: var(--muted);
 }
+.input-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 12px 0 18px;
+}
+
+.input-footer span {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.input-footer label {
+    display: inline;
+    margin: 0 5px 0 0;
+}
+
+select {
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+}
+
+.primary-btn, .secondary-btn, .tab {
+    border: none;
+    border-radius: 9px;
+    padding: 11px 16px;
+}
+
+.primary-btn {
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    font-weight: bold;
+}
+
+.primary-btn:hover {
+    opacity: 0.9;
+}
+
+.primary-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.secondary-btn {
+    background: var(--accent-light);
+    color: var(--accent);
+}
+
+.status {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.results-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+}

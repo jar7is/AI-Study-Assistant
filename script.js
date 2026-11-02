@@ -1,3 +1,4 @@
+
 const notes = document.getElementById("notes");
 const generateBtn = document.getElementById("generateBtn");
 const charCount = document.getElementById("charCount");
@@ -156,6 +157,7 @@ function showHistory() {
         history.appendChild(entry);
     });
 }
+
 // Clear all current history.
 document.getElementById("clearHistoryBtn").addEventListener("click", function () {
     studyHistory = [];
@@ -216,4 +218,9 @@ document.getElementById("themeBtn").addEventListener("click", function () {
     } else {
         this.textContent = "🌙 Theme";
     }
+});
+
+// Basic settings message for the first version.
+document.getElementById("settingsBtn").addEventListener("click", function () {
+    alert("AI API settings will be added in the next version.");
 });

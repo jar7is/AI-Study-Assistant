@@ -35,74 +35,124 @@ tabs.forEach(function (tab) {
     });
 });
 
-// Generate sample study material.
-// We will connect the real AI API in a later step.
-generateBtn.addEventListener("click", function () {
-    const text = notes.value.trim();
+async function generateMaterial() {
+    let text = notes.value.trim();
 
     if (text === "") {
-        status.textContent = "Please enter your notes first.";
+        status.innerText = "Please enter your notes first!";
         return;
     }
 
     generateBtn.disabled = true;
-    status.textContent = "Preparing your study material...";
+    generateBtn.innerText = "Generating...";
+    status.innerText = "Gemini AI is preparing your study material...";
 
-    setTimeout(function () {
-        const style = document.getElementById("answerStyle").value;
-
-        currentResult =
-            "Study Notes\n\n" +
-            "Topic:\n" + text + "\n\n" +
-            "Study style: " + style + "\n\n" +
-            "This is a sample result. Real AI generation will be added next.";
-
-        summary.innerHTML = "";
-        const heading = document.createElement("h3");
-        heading.textContent = "Your Summary";
-
-        const paragraph = document.createElement("p");
-        paragraph.textContent =
-            "Sample summary: " + text.substring(0, 250) +
-            (text.length > 250 ? "..." : "");
-
-        summary.appendChild(heading);
-        summary.appendChild(paragraph);
-
-        quiz.innerHTML = "";
-        const quizHeading = document.createElement("h3");
-        quizHeading.textContent = "Practice Quiz";
-
-        const quizMessage = document.createElement("p");
-        quizMessage.textContent =
-            "Your sample quiz will be replaced with AI-generated questions.";
-
-        quiz.appendChild(quizHeading);
-        quiz.appendChild(quizMessage);
-
-        flashcards.innerHTML = "";
-
-        const card = document.createElement("button");
-        card.className = "flashcard";
-        card.textContent = "Click to reveal a sample answer";
-
-        card.addEventListener("click", function () {
-            if (card.dataset.flipped === "true") {
-                card.textContent = "Click to reveal a sample answer";
-                card.dataset.flipped = "false";
-            } else {
-                card.textContent = text.substring(0, 150);
-                card.dataset.flipped = "true";
-            }
+    try {
+        let response = await fetch("/api/generate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                notes: text,
+                style: document.getElementById("answerStyle").value
+            })
         });
 
-        flashcards.appendChild(card);
+        let data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Generation failed");
+        }
+
+        // Show summary
+        document.getElementById("summary").innerHTML = "";
+
+        let summaryText = document.createElement("p");
+        summaryText.innerText = data.summary;
+        document.getElementById("summary").appendChild(summaryText);
+
+        // Show quiz
+        let quiz = document.getElementById("quiz");
+        quiz.innerHTML = "";
+
+        data.quiz.forEach((item, index) => {
+            let div = document.createElement("div");
+            div.className = "quiz-question";
+
+            let question = document.createElement("h3");
+            question.innerText = (index + 1) + ". " + item.question;
+            div.appendChild(question);
+
+            let feedback = document.createElement("p");
+
+            item.options.forEach((option, i) => {
+                let button = document.createElement("button");
+                button.className = "quiz-option";
+                button.innerText = option;
+
+                button.addEventListener("click", function () {
+                    if (div.dataset.answered) return;
+
+                    div.dataset.answered = "true";
+
+                    if (i === item.answerIndex) {
+                        button.classList.add("correct");
+                        feedback.innerText = "Correct! " + item.explanation;
+                    } else {
+                        button.classList.add("wrong");
+                        feedback.innerText = "Incorrect. " +
+                            item.explanation;
+                    }
+                });
+
+                div.appendChild(button);
+            });
+
+            div.appendChild(feedback);
+            quiz.appendChild(div);
+        });
+
+        // Show flashcards
+        let flashcards = document.getElementById("flashcards");
+        flashcards.innerHTML = "";
+
+        data.flashcards.forEach(item => {
+            let button = document.createElement("button");
+            button.className = "flashcard";
+            button.innerText = item.question;
+
+            button.addEventListener("click", function () {
+                button.innerText =
+                    button.dataset.showAnswer === "true"
+                    ? item.question
+                    : item.answer;
+
+                button.dataset.showAnswer =
+                    button.dataset.showAnswer === "true"
+                    ? "false"
+                    : "true";
+            });
+
+            flashcards.appendChild(button);
+        });
+
+        currentResult = data.summary;
 
         saveHistory(text);
-        status.textContent = "Sample study material is ready!";
-        generateBtn.disabled = false;
-    }, 300);
-});
+
+        status.innerText = "Study material generated successfully!";
+
+        showSection("summary");
+
+    } catch (error) {
+        status.innerText = error.message;
+    }
+
+    generateBtn.disabled = false;
+    generateBtn.innerText = "✦ Generate study material";
+}
+
 
 // Save recent study sessions in memory for now.
 function saveHistory(text) {
